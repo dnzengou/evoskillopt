@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EvoSkillOpt • The Evolution of Self-Improving Agent Skills</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+        
+        :root {
+            --bg-main: #070a13;
+            --bg-card: #0f1424;
+            --bg-card-hover: #151c33;
+            --color-primary: #38bdf8;
+            --color-primary-glow: rgba(56, 189, 248, 0.15);
+            --color-accent: #6366f1;
+            --color-success: #22c55e;
+            --text-muted: #64748b;
+            --text-light: #94a3b8;
+            --border-color: #1e293b;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-main);
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 0% 100%, rgba(56, 189, 248, 0.05) 0%, transparent 40%);
+            background-attachment: fixed;
+            color: #e2e8f0;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .header {
+            background: rgba(7, 10, 19, 0.8);
+            backdrop-filter: blur(12px);
+            padding: 1.25rem 0;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, var(--color-accent), var(--color-primary));
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .logo-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .logo-text span {
+            color: var(--color-primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: white;
+        }
+        
+        .hero {
+            padding: 7rem 0 4rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .version-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(56, 189, 248, 0.06);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            color: var(--color-primary);
+            padding: 0.5rem 1.25rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            letter-spacing: 0.05em;
+        }
+
+        .version-pill::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: var(--color-primary);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--color-primary);
+        }
+        
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 4rem;
+            font-weight: 700;
+            line-height: 1.15;
+            margin: 0 auto 1.5rem;
+            letter-spacing: -0.02em;
+            color: #ffffff;
+            max-width: 900px;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, #fff 30%, var(--color-primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            max-width: 720px;
+            margin: 0 auto 2.5rem;
+            color: var(--text-light);
+            font-weight: 400;
+        }
+
+        .switcher-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 5rem;
+        }
+
+        .switch-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            min-width: 220px;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+
+        .switch-card.active {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 20px var(--color-primary-glow);
+            background: #111a36;
+        }
+
+        .switch-card .icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+        }
+
+        .switch-card.active .icon {
+            background: var(--color-primary);
+            color: #000;
+        }
+
+        .switch-card-text .title {
+            font-weight: 600;
+            font-size: 1rem;
+            color: white;
+        }
+
+        .switch-card-text .desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .section-header-block {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: white;
+        }
+
+        .section-subtitle {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Filter Sub-navigation */
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 3rem;
+            background: rgba(255,255,255,0.02);
+            padding: 0.4rem;
+            border-radius: 9999px;
+            max-width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid var(--border-color);
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            padding: 0.5rem 1.25rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background: white;
+            color: var(--bg-main);
+            font-weight: 600;
+        }
+
+        /* Timeline Styles */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            max-width: 900px;
+            margin: 0 auto 4rem;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+        }
+
+        .timeline-dot {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(56, 189, 248, 0.15);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: var(--color-primary);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+            margin-top: 2px;
+        }
+
+        .timeline-content {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid var(--border-color);
+            padding: 1.25rem 1.5rem;
+            border-radius: 12px;
+        }
+
+        .timeline-content h4 {
+            margin: 0 0 0.5rem;
+            color: white;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+        }
+
+        .timeline-content p {
+            margin: 0;
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Grid Engine Cards */
+        .engine-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 6rem;
+        }
+        
+        .version-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .version-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255,255,255,0.15);
+            background: var(--bg-card-hover);
+        }
+        
+        .version-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+        }
+        
+        .version-number {
+            background: rgba(99, 102, 241, 0.15);
+            color: #a5b4fc;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .version-card.latest .version-number {
+            background: rgba(34, 197, 94, 0.15);
+            color: #4ade80;
+            border-color: rgba(34, 197, 94, 0.2);
+        }
+        
+        .version-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin: 0.5rem 0 0.25rem;
+            color: white;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        .version-desc {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .skill-excerpt {
+            background: #070a14;
+            border-left: 3px solid var(--color-accent);
+            padding: 1.2rem;
+            border-radius: 8px;
+            font-family: 'ui-monospace', 'Cascadia Code', monospace;
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            white-space: pre-wrap;
+            margin: 1rem 0 1.5rem;
+            border: 1px solid #141b30;
+            border-left-width: 3px;
+        }
+
+        .version-card.latest .skill-excerpt {
+            border-left-color: var(--color-primary);
+        }
+
+        .card-tags {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 1rem;
+            margin-top: auto;
+        }
+
+        .card-tags strong {
+            color: var(--text-light);
+        }
+        
+        .version-card.latest {
+            border-color: rgba(56, 189, 248, 0.3);
+            background: linear-gradient(180deg, #0f1424 0%, #0d1b3a 100%);
+        }
+
+        .version-card.latest::before {
+            content: 'Active Hub';
+            position: absolute;
+            top: 12px;
+            right: -25px;
+            background: var(--color-primary);
+            color: #000;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 0.25rem 2rem;
+            transform: rotate(45deg);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Pipeline Visualizer */
+        .pipeline-section {
+            background: rgba(15, 20, 36, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 4rem 2rem;
+            margin-bottom: 6rem;
+            position: relative;
+        }
+
+        .pipeline-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 900px;
+            margin: 3rem auto 0;
+            position: relative;
+        }
+
+        @media (max-width: 768px) {
+            .pipeline-container {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            .pipeline-step::after {
+                display: none !important;
+            }
+        }
+
+        .pipeline-step {
+            background: #070a13;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            flex: 1;
+            max-width: 180px;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .pipeline-step:hover {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 15px rgba(56,189,248,0.1);
+        }
+
+        .pipeline-step::after {
+            content: '→';
+            position: absolute;
+            right: -25%;
+            top: 40%;
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            width: 20px;
+        }
+
+        .pipeline-step:last-child::after {
+            display: none;
+        }
+
+        .step-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.03);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: var(--color-primary);
+            font-weight: bold;
+            font-size: 1.1rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .step-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: white;
+            margin-bottom: 0.25rem;
+        }
+
+        .step-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Distribution Delivery Blocks */
+        .distribution-section {
+            margin-bottom: 6rem;
+        }
+
+        .dist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .dist-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .dist-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .dist-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: white;
+            margin: 0 0 1rem;
+        }
+
+        .btn-copy {
+            width: 100%;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-color);
+            color: white;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .btn-copy:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: var(--text-light);
+        }
+        
+        .github-cta {
+            text-align: center;
+            background: linear-gradient(135deg, #111827 0%, #070a13 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 5rem 2rem;
+            margin: 6rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .github-cta::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(99,102,241,0.05) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.85rem 2.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: var(--color-primary);
+            color: #020617;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background: #7dd3fc;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.25);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.04);
+            color: white;
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: var(--text-light);
+        }
+        
+        .footer {
+            background: #04060d;
+            padding: 4rem 0;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-brand {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-compat {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(4, 6, 13, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 3rem 2.5rem;
+            border-radius: 20px;
+            max-width: 460px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5), 0 0 30px rgba(99, 102, 241, 0.1);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .modal-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.75rem;
+            color: white;
+            margin: 0 0 1rem;
+        }
+
+        .modal-message {
+            color: var(--text-light);
+            font-size: 1.05rem;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
+        .modal-email {
+            display: inline-block;
+            background: #070a13;
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            color: var(--color-primary);
+            font-weight: 600;
+            text-decoration: none;
+            font-family: monospace;
+            margin-bottom: 1.5rem;
+            transition: border-color 0.2s;
+        }
+
+        .modal-email:hover {
+            border-color: var(--color-primary);
+        }
+
+        .btn-close {
+            background: rgba(255,255,255,0.05);
+            border: none;
+            color: white;
+            padding: 0.6rem 1.75rem;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-close:hover {
+            background: rgba(255,255,255,0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Dynamic Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="#" class="logo-container">
+                    <div class="logo-icon">E</div>
+                    <div class="logo-text">Evo<span>SkillOpt</span></div>
+                </a>
+                <div class="nav-links">
+                    <a href="#evolution" class="nav-link">Timeline</a>
+                    <a href="#pipeline" class="nav-link">Process</a>
+                    <a href="#distribution" class="nav-link">Artifacts</a>
+                    <a href="https://github.com/dnzengou/evoforge.git" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+                        <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: middle; margin-right: 4px;"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg> Star Repository
+                </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Workspace Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="version-pill">Open Source Integration Core</div>
+            <h1>From Static Prompts<br><span>To Self-Improving Agent Platforms</span></h1>
+            <p>EvoSkillOpt orchestrates the evolutionary fusion of Agno production layers, SuperAGI autonomy, and MetaClaw conversation pipelines. Turn interactive live workflows into structured, safe optimization loops.</p>
+            
+            <!-- Context Layout Architecture Switcher -->
+            <div class="switcher-container">
+                <div class="switch-card active" id="btn-evoforge-engine">
+                    <div class="icon">🧬</div>
+                    <div class="switch-card-text">
+                        <div class="title">EvoForge Workspace</div>
+                        <div class="desc">Meta-Learning Systems</div>
+                    </div>
+                </div>
+                <div class="switch-card" id="btn-static-engine">
+                    <div class="icon">⚙️</div>
+                    <div class="switch-card-text">
+                        <div class="title">Static Base Engine</div>
+                        <div class="desc">Deterministic Runtime</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Workspace Content Area -->
+    <div class="container">
+        
+        <!-- Evolution Timeline -->
+        <section id="evolution" style="scroll-margin-top: 100px;">
+            <div class="section-header-block">
+                <h2 class="section-title">The Evolutionary Journey</h2>
+                <p class="section-subtitle">A progressive look at how foundational prompt optimization scaled safely into automated agent orchestration ecosystems.</p>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot">1.0</div>
+                    <div class="timeline-content">
+                        <h4>EvolvedSkillOpt v1.0 — Foundational Evolutionary Engine</h4>
+                        <p>Introduced population-based skill optimization using replicator dynamics, group-relative optimization (GRPO) mutations, Q-Gate verification paths, and niche grouping blocks.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot">2.0</div>
+                    <div class="timeline-content">
+                        <h4>EvolvedSkillOpt v2.0 — Matrix-Thinking &amp; Circuit Breaker</h4>
+                        <p>Added 4D Matrix multi-perspective reasoning layers alongside runtime Circuit Breaker overrides. Protected system stability against diversity collapse, stagnation vectors, and infinite functional recursion.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot">3.0</div>
+                    <div class="timeline-content">
+                        <h4>EvolvedSkillOpt v3.0 — Agentic Orchestration</h4>
+                        <p>Extended core optimization frameworks to intelligently delegate work patterns, defining exactly when and how the platform spawns specialized subagents to coordinate task execution paths.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot">3.1</div>
+                    <div class="timeline-content">
+                        <h4>EvoMetaClaw — Live Meta-Learning Layer</h4>
+                        <p>Integrated conversational proxy capture. Allows production interactions to feed back directly as optimization datasets. Sessions auto-summarize profiles asynchronously during low-overhead idle windows.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot" style="background: #22c55e; color: white;">Now</div>
+                    <div class="timeline-content" style="border-color: rgba(34, 197, 94, 0.3); background: rgba(34, 197, 94, 0.02);">
+                        <h4 style="color: #4ade80;">EvoSkillOpt v0.1 — Production Evolutionary Platform</h4>
+                        <p>The unified framework integration tier. Fuses Agno infrastructure components with SuperAGI autonomy parameters, utilizing the entire EvolvedSkillOpt optimization loop to deliver adaptive runtimes.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Header Block -->
+        <div class="section-header-block" style="margin-top: 6rem;">
+            <h2 class="section-title">Core Versions &amp; Their SKILL.md</h2>
+            <p class="section-subtitle">Filter or review the explicit genomic system instructions that drive each progressive milestone tier.</p>
+        </div>
+
+        <!-- Filter Sub-navigation Elements -->
+        <div class="filter-tabs">
+            <button class="filter-btn active" onclick="filterCards('all', this)">All Layers</button>
+            <button class="filter-btn" onclick="filterCards('core', this)">Core Evolution</button>
+            <button class="filter-btn" onclick="filterCards('safety', this)">Safety &amp; Rules</button>
+            <button class="filter-btn" onclick="filterCards('orchestration', this)">Orchestration</button>
+            <button class="filter-btn" onclick="filterCards('meta', this)">Meta-Learning</button>
+        </div>
+        
+        <!-- Interactive Engine Components Grid -->
+        <div class="engine-grid" id="engineGrid">
+            
+            <!-- v1.0 Card -->
+            <div class="version-card" data-category="core" data-version="v1.0">
+                <div class="version-header">
+                    <span class="version-number">v1.0 Foundational</span>
+                    <button class="btn btn-secondary btn-version" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">Explore Specs</button>
+                </div>
+                <div>
+                    <h3 class="version-title">EvolvedSkillOpt Core</h3>
+                    <p class="version-desc">The primary optimization framework utilizing population mechanics, niche isolation clusters, and relative engine mutations.</p>
+                    <div class="skill-excerpt">You maintain a population of skill genomes. Use replicator dynamics, GRPO for group mutations, Q-gate for validation, and niche clustering to continuously improve skills.</div>
+                </div>
+                <div class="card-tags">
+                    <strong>Key Features:</strong> Replicator Dynamics • Q-Gate Filters
+                </div>
+            </div>
+
+            <!-- v2.0 Card -->
+            <div class="version-card" data-category="safety" data-version="v2.0">
+                <div class="version-header">
+                    <span class="version-number">v2.0 Architecture</span>
+                    <button class="btn btn-secondary btn-version" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">Explore Specs</button>
+                </div>
+                <div>
+                    <h3 class="version-title">Matrix + Circuit Breaker</h3>
+                    <p class="version-desc">Introduced structured multidimensional perspective processing to evaluate potential behavioral modifications against critical failure criteria.</p>
+                    <div class="skill-excerpt">Apply MATRIX_THINK before any mutation. Use CIRCUIT_BREAKER_CHECK to detect stagnation, diversity collapse, or excessive recursion depth. Max_depth=2.</div>
+                </div>
+                <div class="card-tags">
+                    <strong>Key Features:</strong> 4D Matrix Reasoning • Recursion Overrides
+                </div>
+            </div>
+
+            <!-- v3.0 Card -->
+            <div class="version-card" data-category="orchestration" data-version="v3.0">
+                <div class="version-header">
+                    <span class="version-number">v3.0 Agentic</span>
+                    <button class="btn btn-secondary btn-version" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">Explore Specs</button>
+                </div>
+                <div>
+                    <h3 class="version-title">Subagent Orchestration</h3>
+                    <p class="version-desc">Evolved execution profiles from basic programmatic actions to distributed orchestration layers managing purpose-built subagent structures.</p>
+                    <div class="skill-excerpt">Intelligently decide when to use subagents. Evaluate task complexity across multiple dimensions before spawning specialist subagents. Optimize for coordination efficiency.</div>
+                </div>
+                <div class="card-tags">
+                    <strong>Key Features:</strong> Specialized Allocation • Coordination Optimization
+                </div>
+            </div>
+
+            <!-- EvoMetaClaw Card -->
+            <div class="version-card" data-category="meta" data-version="restricted">
+                <div class="version-header">
+                    <span class="version-number">v3.1 Live Learning</span>
+                    <button class="btn btn-secondary btn-restricted" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">Explore Specs</button>
+                </div>
+                <div>
+                    <h3 class="version-title">EvoMetaClaw Framework</h3>
+                    <p class="version-desc">Establishes conversational session recording metrics to continuously capture user interface experiences and build local evolutionary models.</p>
+                    <div class="skill-excerpt">Turn every conversation into evolutionary training signals. Inject skills & memory, auto-summarize new skills, and run heavy evolution runs only during idle windows.</div>
+                </div>
+                <div class="card-tags">
+                    <strong>Key Features:</strong> Asynchronous Idle Windows • Memory Injections
+                </div>
+            </div>
+
+            <!-- EvoSkillOpt Card (Latest) -->
+            <div class="version-card latest" data-category="core orchestration meta" data-version="restricted">
+                <div class="version-header">
+                    <span class="version-number">v0.1 Production</span>
+                    <button class="btn btn-primary btn-restricted" style="padding: 0.35rem 0.75rem; font-size: 0.8rem; background: var(--color-primary); color: #000;">Deploy Cluster</button>
+                </div>
+                <div>
+                    <h3 class="version-title">EvoSkillOpt Platform</h3>
+                    <p class="version-desc">The complete unified framework ecosystem. Merges live infrastructure layers with safe continuous optimization systems directly inside active product environments.</p>
+                    <div class="skill-excerpt">Build once. Run in production. Let the platform evolve from real usage safely. Matrix-Thinking + Circuit Breakers + Live Meta-Learning + Multi-Claw Support.</div>
+                </div>
+                <div class="card-tags">
+                    <strong>Current State:</strong> Enterprise-Ready Pipeline • Fused Infrastructure Hub
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Interactive Pipeline Visualizer Section -->
+        <section class="pipeline-section" id="pipeline" style="scroll-margin-top: 100px;">
+            <div class="section-header-block">
+                <h2 class="section-title">The EvoSkillOpt Mutation Loop</h2>
+                <p class="section-subtitle">How active request instances validate through the pipeline workflow to produce guarded, optimized system traits.</p>
+            </div>
+            
+            <div class="pipeline-container">
+                <div class="pipeline-step">
+                    <div class="step-icon">1</div>
+                    <div class="step-title">Matrix Analysis</div>
+                    <div class="step-desc">Evaluates operational parameters through multi-dimensional tracking structures.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="step-icon">2</div>
+                    <div class="step-title">GRPO Mutation</div>
+                    <div class="step-desc">Processes programmatic candidates inside parallel evaluation populations.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="step-icon">3</div>
+                    <div class="step-title">Q-Gate Validation</div>
+                    <div class="step-desc">Confirms candidate changes against standardized unit parameters.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="step-icon">4</div>
+                    <div class="step-title">Circuit Breaker</div>
+                    <div class="step-desc">Checks structural recursion constraints to safely lock deployment parameters.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skill Distribution Modules Section (Inspired by Card Deck Copy Widgets) -->
+        <section class="distribution-section" id="distribution" style="scroll-margin-top: 100px;">
+            <div class="section-header-block">
+                <h2 class="section-title">Get Skill Assets</h2>
+                <p class="section-subtitle">Deploy verified environment profiles into your engineering workspace skills subdirectory.</p>
+            </div>
+
+            <div class="dist-grid">
+                <!-- Dist 1 -->
+                <div class="dist-card">
+                    <div class="dist-meta">14 Core Commands • R²S² Rules</div>
+                    <h4 class="dist-title">EvoDev Workspace Matrix</h4>
+                    <button class="btn-copy btn-restricted-action">
+                        <span>🗐 Copy System Config File</span>
+                    </button>
+                </div>
+                <!-- Dist 2 -->
+                <div class="dist-card">
+                    <div class="dist-meta">8 Distinct Growth Indicators • Adaptive</div>
+                    <h4 class="dist-title">EvoBiz Growth Matrix</h4>
+                    <button class="btn-copy btn-restricted-action">
+                        <span>🗐 Copy System Config File</span>
+                    </button>
+                </div>
+                <!-- Dist 3 -->
+                <div class="dist-card">
+                    <div class="dist-meta">3 Base Pillars • Terse Logging Output</div>
+                    <h4 class="dist-title">EvoKaf Stream Matrix</h4>
+                    <button class="btn-copy btn-restricted-action">
+                        <span>🗐 Copy System Config File</span>
+                    </button>
+                </div>
+            </div>
+        </section>-->
+
+        <!-- GitHub Engagement Action Block -->
+        <div class="github-cta" id="get-started" style="scroll-margin-top: 100px;">
+            <h2 class="section-title" style="margin-bottom: 1rem;">Ready to build self-improving agents?</h2>
+            <p style="color: var(--text-light); max-width: 620px; margin: 0 auto 2.5rem; font-size: 1.1rem;">Clone the core integration architecture, audit comprehensive engine manifests, and start running automated optimization branches inside your terminal environments.</p>
+            <a href="https://github.com/dnzengou/evoforge.git" class="btn btn-primary" style="border: none;">
+                Clone EvoForge Ecosystem Repository →
+            </a>
+        </div>
+    </div>
+
+    <!-- System Layout Footer Element -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-brand">EvoSkillOpt Ecosystem</div>
+            <p style="margin: 0 0 1rem 0;">Production-ready, continuously self-improving automation layers engineered for modular software architecture spaces.</p>
+            <p style="margin: 0; font-size: 0.8rem; color: var(--text-muted);">Repository Endpoint: <a href="https://github.com/dnzengou/evoskillopt.git" style="color: var(--text-light); text-decoration: none;">/evoskillopt.git</a></p>
+            <div class="footer-compat">
+                <span>Core Execution Engine Multi-Profile Targets:</span>
+                <span>Claude</span> • <span>GPT-4</span> • <span>Gemini</span> • <span>Mistral</span> • <span>Localized Workspace Workloads</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Coming Soon Modal Window Popup -->
+    <div class="modal-overlay" id="comingSoonModal">
+        <div class="modal-content">
+            <span class="modal-icon">🔒</span>
+            <h3 class="modal-title">Private Beta</h3>
+            <p class="modal-message">We are in private beta. Contact hello@deeptechx.xyz for access</p>
+            <a href="mailto:hello@deeptechx.xyz" class="modal-email">hello@deeptechx.xyz</a>
+            <div>
+                <button class="btn-close" onclick="closeModal()">Return to Overview</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive Execution Script Layer -->
+    <script>
+        function filterCards(category, element) {
+            // Update Active Tab UI Element State
+            const tabs = document.querySelectorAll('.filter-btn');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            element.classList.add('active');
+
+            // Process Grid Components Target Selection View
+            const cards = document.querySelectorAll('.version-card');
+            cards.forEach(card => {
+                if (category === 'all') {
+                    card.style.display = 'flex';
+                } else {
+                    const attributes = card.getAttribute('data-category');
+                    if (attributes && attributes.includes(category)) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                }
+            });
+        }
+
+        // Modal Action Interfaces
+        function openModal() {
+            document.getElementById('comingSoonModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('comingSoonModal').classList.remove('active');
+        }
+
+        // Close modal when clicking on layout overlay frame background
+        document.getElementById('comingSoonModal').addEventListener('click', function(e) {
+            if(e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Set up Event Listeners across elements flagged for beta restriction path rules
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Hero Switcher cards hook
+            document.getElementById('btn-static-engine').addEventListener('click', openModal);
+            document.getElementById('btn-evoforge-engine').addEventListener('click', openModal);
+
+            // Version grid access check mapping logic
+            const cards = document.querySelectorAll('.version-card');
+            cards.forEach(card => {
+                const btn = card.querySelector('.btn-version, .btn-restricted');
+                if (!btn) return;
+
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Avoid container event side-effects
+                    const targetVersion = card.getAttribute('data-version');
+                    
+                    // Authorized standard public assets check: v1.0, v2.0 (v1.1.0 context equivalent), v3.0
+                    if (targetVersion === 'v1.0' || targetVersion === 'v2.0' || targetVersion === 'v3.0') {
+                        alert('Navigating to open repository source specifications for Milestone Release ' + targetVersion);
+                        window.location.href = "https://github.com/dnzengou/evoforge.git";
+                    } else {
+                        openModal();
+                    }
+                });
+            });
+
+            // Action Card copy asset triggers
+            const copyButtons = document.querySelectorAll('.btn-restricted-action');
+            copyButtons.forEach(btn => {
+                btn.addEventListener('click', openModal);
+            });
+        });
+    </script>
+</body>
+</html>
