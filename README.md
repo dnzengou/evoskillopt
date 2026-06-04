@@ -1,5 +1,5 @@
-# Evolutionary SkillOpt
-## When Evolutionary Biology and Game Theory Meet SkillOpt
+# SkillOpt EGT RL
+## Evolutionary SkillOpt — When Evolutionary Biology and Game Theory Meet SkillOpt
 ## EvoForge
 
 **The Evolutionary Agent Platform**  
