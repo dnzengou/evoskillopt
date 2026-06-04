@@ -1,85 +1,77 @@
 ```
-# docs/metalearning_layer.md
+#evoforge_blueprint.md
 
-# EvoForge Metalearning Layer
 
-## Overview
+# EvoForge Blueprint v0.1
 
-The **Metalearning Layer** is the crown jewel of EvoForge. It transforms the platform from a static agent runtime into a living, self-improving system that learns and evolves directly from real-world conversations and usage.
+**Project**: Evolutionary Agent Platform (Fusion of Agno + SuperAGI + EvolvedSkillOpt + MetaClaw)  
+**Goal**: Build a production-ready, self-improving agent platform that gets meaningfully better from real usage.
 
-This layer draws heavily from MetaClaw’s live meta-learning architecture while integrating EvolvedSkillOpt’s evolutionary mechanisms (population dynamics, GRPO, Matrix-Thinking, and Circuit Breaker).
+## 1. Vision
 
-## Core Components
+Create the next generation of agent platforms where:
+- Building powerful agents is easy (Agno + SuperAGI strengths)
+- The platform itself continuously improves through evolutionary mechanisms
+- Live conversations drive improvement (MetaClaw influence)
+- Safety and observability are first-class (Circuit Breaker + full lineage)
 
-### 1. Conversation Proxy & Signal Capture
-- Intercepts every interaction between the user and their agents.
-- Captures rich signals: success/failure patterns, user feedback, new domain insights, coordination effectiveness, and emerging needs.
-- These signals become the raw material for evolution.
+## 2. Core Layers
 
-### 2. Skill Injection + Auto-Summarization
-- Relevant skills and memory units are dynamically injected into prompts (hybrid retrieval: template + semantic).
-- At the end of sessions, the system automatically extracts and summarizes new skills or improvements.
-- These new skills are added to the skill library and can enter the evolutionary population as candidate genomes.
+### Layer 1: Foundation (Agno + SuperAGI)
+- Production infrastructure (API, storage, observability, RBAC, scheduling)
+- Autonomous agent runtime (toolkits, workflows, memory, GUI)
 
-### 3. Evolutionary Population Engine
-- Maintains a population of **orchestration genomes** (the logic that decides how agents are planned, decomposed, and coordinated).
-- Uses **Matrix-Thinking** to evaluate mutations across multiple dimensions (performance, cost, safety, future adaptability, coordination overhead).
-- Applies **GRPO** (Group Relative Policy Optimization) for directed, sample-efficient mutations.
-- **Q-Gate** validates whether a mutation should be accepted, rejected, or partially merged.
-- **Circuit Breaker** protects against stagnation, diversity collapse, excessive recursion, or runaway subagent spawning.
+### Layer 2: Evolutionary Intelligence
+- Population of orchestration genomes
+- Matrix-Thinking for multi-dimensional reasoning
+- GRPO mutations + Q-Gate validation
+- Self-evolution with Circuit Breaker protection
 
-### 4. Persistent Memory Layer
-- Stores and retrieves:
-  - Episodic memory (specific past events)
-  - Semantic memory (facts about the user/project)
-  - Preference memory (user style and priorities)
-  - Project state memory (current goals, open tasks)
-- Memory is injected alongside skills for context-aware evolution.
+### Layer 3: Metalearning (MetaClaw-inspired)
+- Live conversation proxy
+- Skill injection + auto-summarization
+- Persistent memory layer
+- Smart scheduler (evolution during idle time)
 
-### 5. Smart Scheduler
-- Heavy evolutionary work (population updates, complex mutations, self-evolution) is deferred to user-inactive periods:
-  - Sleep hours
-  - Extended keyboard inactivity
-  - Google Calendar meetings (optional)
-- This ensures the agent remains responsive during active use.
+## 3. Key Innovations
 
-## How Metalearning Drives Improvement
+- **Matrix-Thinking**: Agents and mutations reason across multiple dimensions simultaneously.
+- **Live Meta-Learning**: Real user interactions become evolutionary training data.
+- **Safe Self-Evolution**: The platform can improve its own orchestration logic without human babysitting (thanks to circuit breakers).
+- **Composable Specialization**: Many focused agents working together instead of one monolithic system.
 
-1. User interacts with agents normally.
-2. Signals are captured in real time.
-3. New skills or orchestration improvements are summarized.
-4. During the next idle window, the evolutionary engine runs:
-   - New candidate genomes are generated via matrix-informed GRPO mutations.
-   - They are tested against recent task patterns.
-   - Beneficial changes are integrated via the Q-Gate.
-5. The improved orchestration logic is hot-swapped for future conversations.
+## 4. Target Users
 
-## Safety & Governance
+- Founders and teams building internal agent platforms
+- Developers who want production-grade agents without starting from scratch
+- Power users who want agents that actually get better over time
+- Researchers exploring evolutionary approaches to agent intelligence
 
-- **Circuit Breaker**: Multiple triggers (stagnation, diversity collapse, recursion depth, subagent coordination failures).
-- **Lineage Tracking**: Full audit trail of how the orchestration logic evolved.
-- **Human Oversight Hooks**: Optional approval gates for major evolutionary changes.
-- **Rollback Capability**: Previous best genomes are always preserved.
+## 5. Success Metrics (Phase 1)
 
-## Benefits
+- Easy to deploy and run meaningful agents within minutes
+- Measurable improvement in orchestration quality over time (tracked via fitness/lineage)
+- Strong safety record (no runaway evolution or quality collapse)
+- Active community usage and contributions
 
-- The platform gets **smarter over time** without manual prompt engineering.
-- Improvements are **grounded in real usage**, not just benchmark scores.
-- **Specialization emerges** naturally through niche clustering and matrix-thinking.
-- Users benefit from collective learning across the ecosystem while maintaining privacy and control.
+## 6. Roadmap
 
-## Current Status in EvoForge
+**v0.1 (Current)**: Core evolutionary engine + basic metalearning + Agno/SuperAGI fusion foundations.
 
-The Metalearning Layer is fully specified in the core `SKILL.md` and partially implemented in the Python reference code. Full production implementation would include:
+**v0.2**: Full hot-swapping of evolved orchestration, richer memory layer, production Docker/K8s support.
 
-- Background workers for signal processing and summarization
-- Vector database integration for memory and skill retrieval
-- Scheduler integration (sleep/idle/calendar triggers)
-- Hot-swapping mechanism for evolved orchestration genomes
+**v0.3**: Advanced multi-agent orchestration patterns, token economy hooks, broader multi-claw support.
 
-This layer is what makes EvoForge fundamentally different from traditional agent platforms — it doesn’t just run agents; it **cultivates** better agents and better orchestration logic through continuous, safe evolution.
+**v1.0**: Mature, widely usable self-improving agent platform with strong ecosystem.
+
+## 7. Technical Principles
+
+- Platform-agnostic where possible (works with multiple LLM providers)
+- Strong emphasis on observability and auditability
+- Evolutionary improvements must be safe and reversible
+- Prefer composable specialized components over monolithic solutions
 
 ---
 
-*Next evolution target: Allow the Metalearning Layer itself to evolve its own summarization and mutation strategies.*
+This blueprint serves as the north star for EvoForge development. All major features should trace back to improving real-world agent performance through safe, continuous evolution.
 ```
